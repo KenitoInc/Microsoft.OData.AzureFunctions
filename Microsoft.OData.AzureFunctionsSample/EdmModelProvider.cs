@@ -12,6 +12,7 @@ namespace Microsoft.OData.AzureFunctionsSample
         {
             var builder = new ODataConventionModelBuilder();
             builder.EntitySet<Customer>("Customers");
+            builder.EntityType<Order>();
             return builder.GetEdmModel();
         }
     }
