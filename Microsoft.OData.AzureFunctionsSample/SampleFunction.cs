@@ -16,14 +16,6 @@ namespace Microsoft.OData.AzureFunctionsSample
 {
     public static class SampleFunction
     {
-        private static IList<Customer> customers = new List<Customer>
-        {
-            new Customer { Id = 1, Name = "Ruto" },
-            new Customer { Id = 2, Name = "Ken" },
-            new Customer { Id = 3, Name = "Koko" },
-            new Customer { Id = 4, Name = "Smith" }
-        };
-
         [FunctionName("GetCustomers")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
@@ -33,5 +25,49 @@ namespace Microsoft.OData.AzureFunctionsSample
             var result = options.ApplyTo(customers.AsQueryable());
             return new OkObjectResult(result);
         }
+
+        private static IList<Customer> customers = new List<Customer>
+        {
+            new Customer
+            {
+                Id = 1,
+                Name = "Ruto",
+                Orders = new List<Order>()
+                {
+                    new Order { Id = 1, OrderName = "Order1" },
+                    new Order { Id = 2, OrderName = "Order2" }
+                }
+            },
+            new Customer
+            {
+                Id = 2,
+                Name = "Ken",
+                Orders = new List<Order>()
+                {
+                    new Order { Id =3, OrderName = "Order3" },
+                    new Order { Id = 4, OrderName = "Order4" }
+                }
+            },
+            new Customer 
+            {
+                Id = 3,
+                Name = "Koko",
+                Orders = new List<Order>()
+                {
+                    new Order { Id =4, OrderName = "Order4" },
+                    new Order { Id = 5, OrderName = "Order5" }
+                }
+            },
+            new Customer 
+            {
+                Id = 4,
+                Name = "Smith",
+                Orders = new List<Order>()
+                {
+                    new Order { Id = 6, OrderName = "Order6" },
+                    new Order { Id = 7, OrderName = "Order7" }
+                }
+            }
+        };
     }
 }
