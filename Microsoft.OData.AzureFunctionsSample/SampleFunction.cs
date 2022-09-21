@@ -16,11 +16,12 @@ namespace Microsoft.OData.AzureFunctionsSample
 {
     public static class SampleFunction
     {
+        //static Type modelProviderType = typeof(EdmModelProvider);
         [FunctionName("GetCustomers")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log,
-            [OData(Model = typeof(EdmModelProvider))] ODataQueryOptions<Customer> options)
+            [OData(typeof(EdmModelProvider))] ODataQueryOptions<Customer> options)
         {
             var result = options.ApplyTo(customers.AsQueryable());
             return new OkObjectResult(result);

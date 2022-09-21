@@ -8,6 +8,9 @@ namespace Microsoft.OData.AzureFunctionsSample
 {
     public class EdmModelProvider : IEdmModelProvider
     {
+        public EdmModelProvider()
+        {
+        }
         public IEdmModel GetEdmModel()
         {
             var builder = new ODataConventionModelBuilder();
