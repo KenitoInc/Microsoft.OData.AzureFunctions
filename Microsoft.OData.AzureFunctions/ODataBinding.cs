@@ -21,10 +21,21 @@ namespace Microsoft.OData.AzureFunctions
         public Task<IValueProvider> BindAsync(BindingContext context)
         {
             // Get the HTTP request
-            var request = context.BindingData["req"] as HttpRequest;
+            HttpRequest request = context.BindingData["req"] as HttpRequest;
             IEdmModelProvider modelProvider = (IEdmModelProvider)Activator.CreateInstance(attribute.Model);
 
-            return Task.FromResult<IValueProvider>(new ODataValueProvider<T>(request, modelProvider));
+            // this.GetType is ODataBinding<ODataQueryOptions<T>>
+
+            // This code extracts ODataQueryOptions<T> from ODataBinding<ODataQueryOptions<T>>
+            Type odataBindingArgumentType = this.GetType().GenericTypeArguments.First();
+
+            // TODO: validation if the type is ODataQueryOptions<T>
+            // Custom logic if we will also be supporting IQueryable<T>
+
+            // This code extracts T from ODataQueryOptions<T>
+            Type type = odataBindingArgumentType.GenericTypeArguments.First();
+
+            return Task.FromResult<IValueProvider>(new ODataValueProvider<T>(request, modelProvider, type));
         }
 
         public ParameterDescriptor ToParameterDescriptor() => new ParameterDescriptor();
