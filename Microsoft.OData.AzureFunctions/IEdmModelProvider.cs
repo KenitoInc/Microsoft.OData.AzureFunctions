@@ -4,6 +4,6 @@ namespace Microsoft.OData.AzureFunctions
 {
     public interface IEdmModelProvider
     {
-        EdmModel GetEdmModel();
+        IEdmModel GetEdmModel();
     }
 }
