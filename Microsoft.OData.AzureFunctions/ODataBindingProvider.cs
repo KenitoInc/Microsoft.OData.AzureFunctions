@@ -8,11 +8,11 @@ namespace Microsoft.OData.AzureFunctions
         public Task<IBinding> TryCreateAsync(BindingProviderContext context)
         {
             ODataAttribute attribute = context.Parameter.GetCustomAttribute<ODataAttribute>(inherit: false);
-            IBinding binding = CreateBodyBinding(context.Parameter.ParameterType, attribute);
+            IBinding binding = CreateODataBinding(context.Parameter.ParameterType, attribute);
             return Task.FromResult(binding);
         }
 
-        private IBinding CreateBodyBinding(Type T, ODataAttribute attribute)
+        private IBinding CreateODataBinding(Type T, ODataAttribute attribute)
         {
             Type type = typeof(ODataBinding<>).MakeGenericType(T);
             var bindingInstance = Activator.CreateInstance(type, new object[] { attribute });
