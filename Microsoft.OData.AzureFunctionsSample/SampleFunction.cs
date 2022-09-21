@@ -16,8 +16,7 @@ namespace Microsoft.OData.AzureFunctionsSample
 {
     public static class SampleFunction
     {
-        //static Type modelProviderType = typeof(EdmModelProvider);
-        [FunctionName("GetCustomers")]
+        [FunctionName("Customers")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
             ILogger log,
