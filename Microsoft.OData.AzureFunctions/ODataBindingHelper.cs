@@ -25,7 +25,7 @@ namespace Microsoft.OData.AzureFunctions
 
         private static void ConfigureOData(HttpRequest httpRequest, IEdmModel model, string routePrefix)
         {
-            ODataOptions options = httpRequest.ODataOptions();
+            ODataOptions options = new ODataOptions();
 
             options.AddRouteComponents(routePrefix, model);
             httpRequest.ODataFeature().Services = options.GetRouteServices(routePrefix);

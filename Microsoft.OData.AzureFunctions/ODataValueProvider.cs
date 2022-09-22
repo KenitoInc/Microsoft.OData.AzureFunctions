@@ -22,9 +22,8 @@ namespace Microsoft.OData.AzureFunctions
         {
             try
             {
-                // This is where we will handle OData related logic using 
+                // This is where we handle OData related logic using 
                 // the IEdmModel, HttpRequest and clrType
-                // The code below will be removed.
                 IEdmModel model = this.modelProvider.GetEdmModel();
 
                 // TODO: Add routePrefix to constructor to be passed from the function
