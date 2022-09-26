@@ -15,27 +15,19 @@ namespace Microsoft.OData.AzureFunctions
 
         public Task<IValueProvider> BindAsync(object value, ValueBindingContext context)
         {
-            return null;
+            HttpRequest request = value as HttpRequest ?? throw new ArgumentException($"{nameof(value)} must be a {nameof(HttpRequest)}", nameof(value));
+            IEdmModelProvider modelProvider = (IEdmModelProvider)Activator.CreateInstance(attribute.ModelProvider);
+
+            return Task.FromResult<IValueProvider>(new ODataValueProvider<T>(request, modelProvider));
         }
 
         public Task<IValueProvider> BindAsync(BindingContext context)
         {
             // Get the HTTP request
-            HttpRequest request = context.BindingData["req"] as HttpRequest;
-            IEdmModelProvider modelProvider = (IEdmModelProvider)Activator.CreateInstance(attribute.Model);
-
-            // this.GetType is ODataBinding<ODataQueryOptions<T>>
-
-            // This code extracts ODataQueryOptions<T> from ODataBinding<ODataQueryOptions<T>>
-            Type odataBindingArgumentType = this.GetType().GenericTypeArguments.First();
-
-            // TODO: validation if the type is ODataQueryOptions<T>
-            // Custom logic if we will also be supporting IQueryable<T>
-
-            // This code extracts T from ODataQueryOptions<T>
-            Type type = odataBindingArgumentType.GenericTypeArguments.First();
-
-            return Task.FromResult<IValueProvider>(new ODataValueProvider<T>(request, modelProvider, type));
+            if (context.BindingData["$request"] is not HttpRequest request) {
+                throw new ArgumentException("Binding can only be used with HttpTrigger");
+            }
+            return BindAsync(request, context.ValueContext);
         }
 
         public ParameterDescriptor ToParameterDescriptor() => new ParameterDescriptor();

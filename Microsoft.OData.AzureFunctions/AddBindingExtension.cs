@@ -6,10 +6,7 @@ namespace Microsoft.OData.AzureFunctions
     {
         public static IWebJobsBuilder AddODataBindingProvider(this IWebJobsBuilder builder)
         {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
+            _ = builder ?? throw new ArgumentNullException(nameof(builder));
 
             builder.AddExtension<ODataBindingProviderConfig>();
             return builder;
