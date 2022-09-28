@@ -6,36 +6,28 @@ namespace Microsoft.OData.AzureFunctions
 {
     public class ODataValueProvider<T> : IValueProvider
     {
-        private HttpRequest request;
-        private IEdmModelProvider modelProvider;
-        private Type clrType;
-        private string routePrefix;
+        private readonly HttpRequest request;
+        private readonly IEdmModelProvider modelProvider;
+        private readonly string routePrefix;
 
-        public ODataValueProvider(HttpRequest request, IEdmModelProvider modelProvider, Type clrType)
+        public ODataValueProvider(HttpRequest request, IEdmModelProvider modelProvider)
         {
             this.request = request;
             this.modelProvider = modelProvider;
-            this.clrType = clrType;
             this.routePrefix = "api";
         }
-        public async Task<object> GetValueAsync()
+        public Task<object> GetValueAsync()
         {
-            try
-            {
-                // This is where we handle OData related logic using 
-                // the IEdmModel, HttpRequest and clrType
-                IEdmModel model = this.modelProvider.GetEdmModel();
+            // This is where we handle OData related logic using 
+            // the IEdmModel, HttpRequest and clrType
+            IEdmModel model = this.modelProvider.GetEdmModel();
 
-                // TODO: Add routePrefix to constructor to be passed from the function
-                return ODataBindingHelper.BuildODataQueryOptions(this.request, model, this.clrType, this.routePrefix);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            // TODO: Add routePrefix to constructor to be passed from the function
+            Type clrType = this.Type.GenericTypeArguments.First();
+            return Task.FromResult<object>(ODataBindingHelper.BuildODataQueryOptions(this.request, model, clrType, this.routePrefix));
         }
 
-        public Type Type => typeof(object);
+        public Type Type => typeof(T);
         public string ToInvokeString() => string.Empty;
     }
 }

@@ -6,11 +6,11 @@ namespace Microsoft.OData.AzureFunctions
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
     public sealed class ODataAttribute : Attribute
     {
-        public ODataAttribute(Type model)
+        public ODataAttribute(Type modelProvider)
         {
-            Model = model;
+            ModelProvider = modelProvider;
         }
 
-        public Type Model { get; set; }
+        public Type ModelProvider { get; set; }
     }
 }
