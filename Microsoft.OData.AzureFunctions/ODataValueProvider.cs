@@ -18,20 +18,13 @@ namespace Microsoft.OData.AzureFunctions
         }
         public Task<object> GetValueAsync()
         {
-            try
-            {
-                // This is where we handle OData related logic using 
-                // the IEdmModel, HttpRequest and clrType
-                IEdmModel model = this.modelProvider.GetEdmModel();
+            // This is where we handle OData related logic using 
+            // the IEdmModel, HttpRequest and clrType
+            IEdmModel model = this.modelProvider.GetEdmModel();
 
-                // TODO: Add routePrefix to constructor to be passed from the function
-                Type clrType = typeof(T).GenericTypeArguments.First();
-                return Task.FromResult<object>(ODataBindingHelper.BuildODataQueryOptions(this.request, model, clrType, this.routePrefix));
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            // TODO: Add routePrefix to constructor to be passed from the function
+            Type clrType = this.Type.GenericTypeArguments.First();
+            return Task.FromResult<object>(ODataBindingHelper.BuildODataQueryOptions(this.request, model, clrType, this.routePrefix));
         }
 
         public Type Type => typeof(T);

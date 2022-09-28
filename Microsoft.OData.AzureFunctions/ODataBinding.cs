@@ -24,9 +24,11 @@ namespace Microsoft.OData.AzureFunctions
         public Task<IValueProvider> BindAsync(BindingContext context)
         {
             // Get the HTTP request
-            if (context.BindingData["$request"] is not HttpRequest request) {
+            if (context.BindingData["$request"] is not HttpRequest request)
+            {
                 throw new ArgumentException("Binding can only be used with HttpTrigger");
             }
+
             return BindAsync(request, context.ValueContext);
         }
 
